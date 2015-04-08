@@ -1,23 +1,34 @@
-# browserify-versionify
+# substitutify
 
-Browserify transform to replace placeholder with package version.
+Browserify transform to replace placeholders with infos from `package.json`.
 
-By default, it replaces `__VERSION__` with the version from `package.json` in your source code.
+Inspired by [browserify-versionify](https://github.com/webpro/versionify).
 
 ## Usage
 
-From command line:
+From package.json:
 
-    browserify -t browserify-versionify
+    {
+      ...
+      "browserify": {
+        "transform": [
+          ["sustitutify", {
+            "__VERSION__": "version",
+            "__NAME__": "name"
+          }],
+          ...
+        ],
+        ...
+      },
+      ...
+    }
 
 From Node.js:
 
-    browserify().transform('browserify-versionify');
-
-    // Configure (default values shown)
-    browserify().transform('browserify-versionify', {
-        placeholder: '__VERSION__',
-        version: pkg.version
+    browserify().transform('substitutify', {
+      '__VERSION__': 'version',
+      '__NAME__': 'name'
     });
 
 You can also provide a `filter` property to whitelist files to apply the transform to (e.g. `filter: /\.js$/`).
+

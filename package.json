@@ -1,22 +1,23 @@
 {
-  "name": "browserify-versionify",
-  "version": "1.0.4",
-  "description": "Browserify transform to replace placeholder with package version",
+  "name": "substitutify",
+  "version": "0.1.0",
+  "description": "Browserify transform to replace placeholders with infos from package.json",
   "keywords": [
     "browserify",
     "transform",
     "browserify-transform",
-    "version"
+    "package",
+    "substitute"
   ],
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/webpro/versionify.git"
+    "url": "https://github.com/layflags/substitutify.git"
   },
   "author": {
-    "name": "Lars Kappert",
-    "email": "lars@webpro.nl",
-    "url": "http://webpro.nl"
+    "name": "Lay Flags",
+    "email": "code@layfla.gs",
+    "url": "http://layflags.com"
   },
   "license": "MIT",
   "dependencies": {

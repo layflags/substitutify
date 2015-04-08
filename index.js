@@ -1,28 +1,38 @@
-var findRoot = require('find-root'),
-    path = require('path'),
-    through2 = require('through2');
+var findRoot = require('find-root');
+var path = require('path');
+var through2 = require('through2');
+var packageJson = require(path.join(findRoot(process.cwd()), 'package.json'));
 
-function versionify(file, options) {
+function substitutify(file, options) {
+  options = options || {};
+  var filter = options.filter;
+  delete options.filter;
 
-    options = options || {};
-    var filter = options.filter,
-        placeholder = options.placeholder || '__VERSION__',
-        version = options.version ||
-            require(path.join(findRoot(process.cwd()), 'package.json')).version,
+  if (filter && !filter.test(file)) {
+    return through2();
+  }
+
+  return through2({ objectMode: true }, function (chunk, encoding, callback) {
+    var result = chunk.toString();
+    var placeholder, re, value;
+
+    for (placeholder in options) {
+      if (options.hasOwnProperty(placeholder)) {
         re = new RegExp(placeholder, 'g');
-
-    if (filter && !filter.test(file)) {
-        return through2();
+        value = packageJson[options[placeholder]];
+        result = result.replace(re, value);
+      }
     }
-    return through2({objectMode: true}, function(chunk, encoding, callback) {
-        return callback(null, chunk.toString().replace(re, version));
-    });
+
+    return callback(null, result);
+  });
 }
 
-versionify.configure = function(options) {
-    return function(file) {
-        return versionify(file, options);
-    };
+substitutify.configure = function (options) {
+  return function (file) {
+    return substitutify(file, options);
+  };
 };
 
-module.exports = versionify;
+module.exports = substitutify;
+
